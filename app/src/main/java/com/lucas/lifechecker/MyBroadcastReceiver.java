@@ -15,17 +15,16 @@ import com.lucas.lifechecker.db.CounterDbHelper;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = "MyBroadcastReceiver";
-    private static int LOGINS = 0;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         CounterDbHelper db = new CounterDbHelper( context );
 
-        int num = db.increaseCounter();
-        db.testDate();
+        int num = db.checkAndAddToCount();
+
+        int weeknum = db.getWeekCount();
 
         StringBuilder sb = new StringBuilder();
-        LOGINS++;
         sb.append( num );
         String log = sb.toString();
         Log.d( TAG, log );

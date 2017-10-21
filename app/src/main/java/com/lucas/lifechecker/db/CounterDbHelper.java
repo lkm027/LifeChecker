@@ -5,12 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.icu.text.SimpleDateFormat;
-import android.icu.text.UnicodeSetSpanner;
-import android.provider.BaseColumns;
 import android.util.Log;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Created by Lucas on 10/14/2017.
@@ -18,128 +15,201 @@ import java.util.Date;
 
 public class CounterDbHelper extends SQLiteOpenHelper {
 
-    public static final String TABLE_COUNT = "tb_count";
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_TODAY = "today";
-    public static final String COLUMN_WEEK = "week";
-
+    // Daily Count Table
     public static final String TABLE_DAILY_COUNT =  "tb_daily_count";
     public static final String COLUMN_DATE = "date_pk";
     public static final String COLUMN_DAILY_COUNT = "daily_count";
 
-    public static final int DATABASE_VERSION = 5;
-    public static final String DATABASE_NAME = "Counter.db";
+    // weekly Count Table
+    public static final String TABLE_WEEKLY_COUNT = "tb_weekly_count";
+    public static final String COLUMN_WEEK = "week_pk";
+    public static final String COLUMN_WEEKLY_COUNT = "weekly_count";
+    public static final String COLUMN_DATE_OF_WEEK = "date_of_week";
 
-    private static final String SQL_CREATE_ENTRIES =
-        "CREATE TABLE " + TABLE_COUNT + " (" +
-                COLUMN_ID + " INTEGER PRIMARY KEY," +
-                COLUMN_TODAY + " INTEGER," +
-                COLUMN_WEEK + " INTERGER )";
+    public static final int DATABASE_VERSION = 14;
+    public static final String DATABASE_NAME = "Counter.db";
 
     private static final String SQL_CREATE_DAILY_COUNT =
             "CREATE TABLE " + TABLE_DAILY_COUNT + " (" +
                     COLUMN_DATE + " STRING PRIMARY KEY," +
                     COLUMN_DAILY_COUNT + " INTEGER )";
 
+    private static final String SQL_CREATE_WEEKLY_COUNT =
+            "CREATE TABLE " + TABLE_WEEKLY_COUNT + " (" +
+                    COLUMN_WEEK + " STRING PRIMARY KEY," +
+                    COLUMN_WEEKLY_COUNT + " INTEGER," +
+                    COLUMN_DATE_OF_WEEK + " STRING )";
+
     public CounterDbHelper( Context context ) {
         super( context, DATABASE_NAME, null, DATABASE_VERSION );
     }
 
+    //TODO: Check to see if the current date exists in the db, if no, add it
     public void onCreate( SQLiteDatabase db ) {
-        db.execSQL( SQL_CREATE_ENTRIES );
-        db.execSQL( SQL_CREATE_DAILY_COUNT);
+        db.execSQL( SQL_CREATE_DAILY_COUNT );
+        db.execSQL( SQL_CREATE_WEEKLY_COUNT );
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, 1);
-        values.put(COLUMN_TODAY, 0);
-        values.put(COLUMN_WEEK, 0);
-        db.insert(TABLE_COUNT, null, values);
-        values.clear();
+        String formattedDate = getCurrentDate();
 
-        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = date.format(new Date());
-        Log.d("DATE", formattedDate );
         values.put( COLUMN_DATE, formattedDate);
         values.put( COLUMN_DAILY_COUNT, 0 );
         db.insert( TABLE_DAILY_COUNT, null, values );
+        values.clear();
+
+        String currentWeek = getCurrentWeek();
+        String currentDate = getCurrentDate();
+
+        values.put( COLUMN_WEEK, currentWeek );
+        values.put( COLUMN_WEEKLY_COUNT, 0 );
+        values.put( COLUMN_DATE_OF_WEEK,  currentDate );
+        db.insert( TABLE_WEEKLY_COUNT, null, values );
     }
 
     public void onUpgrade( SQLiteDatabase db, int oldVersion, int newVersion ) {
-        db.execSQL( "DROP TABLE IF EXISTS " + TABLE_COUNT);
-        db.execSQL( "DROP TABLE IF EXISTS " + TABLE_DAILY_COUNT);
+        db.execSQL( "DROP TABLE IF EXISTS " + TABLE_DAILY_COUNT );
+        db.execSQL( "DROP TABLE IF EXISTS " + TABLE_WEEKLY_COUNT );
         onCreate( db );
     }
 
     /**
-     * Increases the view count for the current day and current week
-     * @return the views for the current day
+     * Check to see if the current day exists and then add a count to it
+     * @return
      */
-    public int increaseCounter() {
-        // Get our db repo in write mode
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        // Grab the current information from our db
-        Cursor cursor = db.rawQuery("SELECT * FROM tb_count WHERE id='1'", null);
-        cursor.moveToFirst();
-        int today = cursor.getInt(1);
-        int week = cursor.getInt(2);
-        cursor.close();
-
-        // Update our db
-        // Will not actually update without the cursor
-        Cursor c = db.rawQuery( "UPDATE tb_count SET today='"+ ++today +"'," +
-                " week='"+ ++week +"'" +
-                " WHERE id='1'", null);
-        c.moveToFirst();
-        c.close();
-        return today;
-    }
-
-    public void testDate() {
+    public int checkAndAddToCount() {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        String today = date.format(new Date());
-
-        Cursor cursor = db.rawQuery( "SELECT * FROM tb_daily_count WHERE date_pk='"+ today + "'", null);
-
-        cursor.moveToFirst();
-        cursor.getString(0);
-    }
-
-    public void checkAndAddView() {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        SimpleDateFormat currentDate = new SimpleDateFormat( "yyyy-MM-dd" );
-        String currentDate_string = currentDate.format( new Date() );
-
+        String currentDate_string = getCurrentDate();
         Cursor checkIfAdded = db.rawQuery( "SELECT * FROM tb_daily_count WHERE date_pk='"+ currentDate_string +"'", null);
+        checkIfAdded.moveToFirst();
 
         if( checkIfAdded.getCount() == 0 ) {
-            addToDailyCount( db );
+            addNewDay( currentDate_string );
         }
+
+        addToWeek(db);
+        checkIfAdded.close();
+
+        return addToDailyCount( db );
     }
 
+    /**
+     * Check to see if this week exists and create the week if it doesn't and add a count to it
+     * @param db - the db
+     */
+    private void addToWeek( SQLiteDatabase db ){
+        String currentWeek = getCurrentWeek();
+        Cursor checkIfAdded = db.rawQuery( "SELECT * FROM tb_weekly_count WHERE week_pk='"+ currentWeek + "'", null );
+
+        if( checkIfAdded.getCount() == 0 ) {
+            addNewWeek( currentWeek );
+        }
+            addtoWeekCount( currentWeek );
+        checkIfAdded.close();
+    }
+
+    /**
+     * Add another view to our current week
+     * @param currentWeek string - the current week
+     */
+    private void addtoWeekCount( String currentWeek ) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor currentWeekCount = db.rawQuery( "SELECT * FROM tb_weekly_count WHERE week_pk='" + currentWeek + "'", null );
+        currentWeekCount.moveToFirst();
+        int weekCount = currentWeekCount.getInt(1);
+        currentWeekCount.close();
+
+        Cursor weeklyCount = db.rawQuery( "UPDATE tb_weekly_count SET weekly_count="+ ++weekCount + "" +
+                " WHERE week_pk='" + currentWeek + "'", null );
+        weeklyCount.moveToFirst();
+        weeklyCount.close();
+    }
+
+    /**
+     * Add a new week to our db
+     * @param currentWeek string - the current week
+     */
+    private void addNewWeek( String currentWeek ) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        String currentDate = getCurrentDate();
+
+        values.put( COLUMN_WEEK, currentWeek );
+        values.put( COLUMN_WEEKLY_COUNT, 0 );
+        values.put( COLUMN_DATE_OF_WEEK,  currentDate );
+        db.insert( TABLE_WEEKLY_COUNT, null, values );
+    }
+
+    /**
+     * Add a new week to our db
+     * @param currentDay string - the current week
+     */
+    private void addNewDay( String currentDay ) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        String currentDate = getCurrentDate();
+
+        values.put( COLUMN_DATE, currentDate );
+        values.put( COLUMN_DAILY_COUNT, 0 );
+        db.insert( TABLE_DAILY_COUNT, null, values );
+    }
+
+    /**
+     * Add to the day's count
+     * @param db sqlitedatabse - the db
+     * @return Current day count
+     */
     private int addToDailyCount( SQLiteDatabase db) {
+        String currentDate = getCurrentDate();
+        Cursor currentDateCount = db.rawQuery( "SELECT * FROM tb_daily_count WHERE date_pk='"+ currentDate +"'", null);
 
-        Cursor cursor = db.rawQuery("SELECT * FROM tb_count WHERE id='1'", null);
-        cursor.moveToFirst();
-        int today = cursor.getInt(1);
-        int week = cursor.getInt(2);
+        currentDateCount.moveToFirst();
+        int currentDay_Count = currentDateCount.getInt(1);
+        currentDateCount.close();
 
-        SimpleDateFormat currentDate = new SimpleDateFormat( "yyyy-MM-dd" );
-        String currentDate_string = currentDate.format( new Date() );
-
-        Cursor currentDay = db.rawQuery( "SELECT * FROM tb_daily_count WHERE date_pk='"+ currentDate_string +"'", null);
-
-        currentDay.moveToFirst();
-        int currentDay_Count = currentDay.getInt(1);
-
-        Cursor dailyCount = db.rawQuery( "UPDATE tb_count SET daily_count='"+ ++currentDay_Count +"'," +
-                " WHERE date_pk='"+ currentDate_string +"'", null);
-
+        Cursor dailyCount = db.rawQuery( "UPDATE tb_daily_count SET daily_count='"+ ++currentDay_Count +"'" +
+                " WHERE date_pk='"+ currentDate +"'", null);
         dailyCount.moveToFirst();
+        dailyCount.close();
 
         return currentDay_Count;
+    }
+
+    /**
+     * Obtain the current date
+     * @return string - representation of the date (YYYY-MM-DD)
+     */
+    private String getCurrentDate() {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get( Calendar.DAY_OF_MONTH );
+        int month = calendar.get( Calendar.MONTH );
+        int year = calendar.get( Calendar.YEAR );
+        return year + "-" + ++month + "-" + day;
+    }
+
+    /**
+     * Obtain the current week of the year
+     * @return int - week of the year
+     */
+    private String getCurrentWeek() {
+        Calendar calendar = Calendar.getInstance();
+        int week = calendar.get( Calendar.WEEK_OF_YEAR );
+        int year = calendar.get( Calendar.YEAR );
+        return week + "-" + year;
+    }
+
+    public int getWeekCount() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String currentWeek = getCurrentWeek();
+
+        Cursor currentWeekCount = db.rawQuery( "SELECT * FROM tb_weekly_count WHERE week_pk='" + currentWeek + "'", null );
+        currentWeekCount.moveToFirst();
+        int weekCount = currentWeekCount.getInt(1);
+        currentWeekCount.close();
+
+        return weekCount;
     }
 }
