@@ -1,86 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.lucas.lifechecker.HomeActivity">
+    android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:id="@+id/textVW_home_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/light_teal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.054"
-        android:id="@+id/textView2" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
+        android:id="@+id/txtVW_home_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/app_name"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="#fff"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textVW_home_background" />
+
+    <TextView
+        android:id="@+id/txtVW_home_circle"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/circle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.48000002"
+        app:layout_constraintRight_toLeftOf="@+id/textVW_home_background"
+        app:layout_constraintLeft_toRightOf="@+id/textVW_home_background" />
+
+    <TextView
+        android:id="@+id/txtVW_home_dailyCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display4"
+        android:textColor="@color/medium_teal"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/txtVW_home_circle"
+        app:layout_constraintLeft_toRightOf="@+id/txtVW_home_circle"
+        app:layout_constraintRight_toLeftOf="@+id/txtVW_home_circle"
+        app:layout_constraintTop_toBottomOf="@+id/txtVW_home_circle" />
+
+    <TextView
+        android:id="@+id/txtVW_home_unlockedString"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="52dp"
-        android:background="@drawable/rounded_corner"
-        android:textSize="14dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_marginTop="8dp"
+        android:text="@string/views_for_today"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toTopOf="@+id/txtVW_home_circle"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/txtVW_home_title"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/txtVW_homeScreen_unlockTitle"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/views_for_today"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintLeft_toLeftOf="@+id/textView"
-        app:layout_constraintRight_toRightOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/txtVW_homeScreen_circle"
-        android:layout_width="244dp"
-        android:layout_height="232dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/circle"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.413"
-        app:layout_constraintLeft_toLeftOf="@+id/textView"
-        app:layout_constraintRight_toRightOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/txtVW_homeScreen_unlockTitle"
-        app:layout_constraintVertical_bias="0.107" />
-
-    <TextView
-        android:id="@+id/txtVW_homeScreen_todayCount"
+        android:id="@+id/txtVW_home_timesString"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:text="0"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display4"
-        android:textColor="#000"
-        app:layout_constraintBottom_toBottomOf="@+id/txtVW_homeScreen_circle"
-        app:layout_constraintLeft_toLeftOf="@+id/txtVW_homeScreen_circle"
-        app:layout_constraintRight_toRightOf="@+id/txtVW_homeScreen_circle"
-        app:layout_constraintTop_toTopOf="@+id/txtVW_homeScreen_circle" />
+        android:layout_marginTop="16dp"
+        android:text="@string/times_today"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtVW_home_circle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/button_home_refreshCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ic_refresh"
+        android:onClick="refreshCount"/>
 
 </android.support.constraint.ConstraintLayout>

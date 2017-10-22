@@ -2,6 +2,7 @@ package com.lucas.lifechecker;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.lucas.lifechecker.db.CounterDbHelper;
@@ -21,8 +22,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void populateScreen() {
-        TextView todayCount_textview = (TextView) findViewById( R.id.txtVW_homeScreen_todayCount );
+        TextView todayCount_textview = (TextView) findViewById( R.id.txtVW_home_dailyCount );
         int currentDayCount = db.getWeekCount();
         todayCount_textview.setText( String.valueOf( currentDayCount ) );
+    }
+
+    public void refreshCount( View view ) {
+        populateScreen();
     }
 }

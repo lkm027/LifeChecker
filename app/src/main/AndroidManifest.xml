@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".MyBroadcastReceiver" android:exported="true">
+        <receiver android:name=".UnlockedPhoneReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT"/>
             </intent-filter>

@@ -2,6 +2,6 @@
     <string name="app_name">LifeChecker</string>
     <string name="views_for_today">You\'ve unlocked your phone..</string>
     <string name="times">TIMES</string>
-    <string name="times_today">TIMES TODAY</string>
+    <string name="times_today">..times today</string>
     <string name="times_this_week">TIMES THIS WEEK</string>
 </resources>
