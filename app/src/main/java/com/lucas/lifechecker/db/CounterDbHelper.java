@@ -212,4 +212,16 @@ public class CounterDbHelper extends SQLiteOpenHelper {
 
         return weekCount;
     }
+
+    public int getTodayCount() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String currentDate = getCurrentDate();
+
+        Cursor currentDayCount = db.rawQuery( "SELECT * FROM tb_daily_count WHERE date_pk='" + currentDate + "'", null );
+        currentDayCount.moveToFirst();
+        int weekCount = currentDayCount.getInt(1);
+        currentDayCount.close();
+
+        return weekCount;
+    }
 }

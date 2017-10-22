@@ -25,7 +25,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         int weeknum = db.getWeekCount();
 
         StringBuilder sb = new StringBuilder();
-        sb.append( num );
+        sb.append( weeknum );
         String log = sb.toString();
         Log.d( TAG, log );
         Toast.makeText( context, log, Toast.LENGTH_LONG ).show();
