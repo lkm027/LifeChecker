@@ -23,7 +23,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void populateScreen() {
         TextView todayCount_textview = (TextView) findViewById( R.id.txtVW_home_dailyCount );
-        int currentDayCount = db.getWeekCount();
+        int currentDayCount = db.getTodayCount();
         todayCount_textview.setText( String.valueOf( currentDayCount ) );
     }
 
