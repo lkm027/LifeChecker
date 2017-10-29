@@ -19,6 +19,7 @@ public class CounterDbHelper extends SQLiteOpenHelper {
     public static final String TABLE_DAILY_COUNT =  "tb_daily_count";
     public static final String COLUMN_DATE = "date_pk";
     public static final String COLUMN_DAILY_COUNT = "daily_count";
+    public static final String COLUMN_DAY_OF_WEEK = "day_of_week";
 
     // weekly Count Table
     public static final String TABLE_WEEKLY_COUNT = "tb_weekly_count";
@@ -26,25 +27,25 @@ public class CounterDbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_WEEKLY_COUNT = "weekly_count";
     public static final String COLUMN_DATE_OF_WEEK = "date_of_week";
 
-    public static final int DATABASE_VERSION = 14;
+    public static final int DATABASE_VERSION = 15;
     public static final String DATABASE_NAME = "Counter.db";
 
     private static final String SQL_CREATE_DAILY_COUNT =
             "CREATE TABLE " + TABLE_DAILY_COUNT + " (" +
                     COLUMN_DATE + " STRING PRIMARY KEY," +
-                    COLUMN_DAILY_COUNT + " INTEGER )";
+                    COLUMN_DAILY_COUNT + " INTEGER," +
+                    COLUMN_DAY_OF_WEEK + " STRING )";
 
     private static final String SQL_CREATE_WEEKLY_COUNT =
             "CREATE TABLE " + TABLE_WEEKLY_COUNT + " (" +
                     COLUMN_WEEK + " STRING PRIMARY KEY," +
                     COLUMN_WEEKLY_COUNT + " INTEGER," +
-                    COLUMN_DATE_OF_WEEK + " STRING )";
+                    COLUMN_DATE_OF_WEEK + " INTEGER )";
 
     public CounterDbHelper( Context context ) {
         super( context, DATABASE_NAME, null, DATABASE_VERSION );
     }
 
-    //TODO: Check to see if the current date exists in the db, if no, add it
     public void onCreate( SQLiteDatabase db ) {
         db.execSQL( SQL_CREATE_DAILY_COUNT );
         db.execSQL( SQL_CREATE_WEEKLY_COUNT );
@@ -144,16 +145,16 @@ public class CounterDbHelper extends SQLiteOpenHelper {
 
     /**
      * Add a new week to our db
-     * @param currentDay string - the current week
+     * @param currentDate string - the current week
      */
-    private void addNewDay( String currentDay ) {
+    private void addNewDay( String currentDate ) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        String currentDate = getCurrentDate();
 
         values.put( COLUMN_DATE, currentDate );
         values.put( COLUMN_DAILY_COUNT, 0 );
+        values.put( COLUMN_DAY_OF_WEEK, getDayofWeek());
         db.insert( TABLE_DAILY_COUNT, null, values );
     }
 
@@ -201,6 +202,11 @@ public class CounterDbHelper extends SQLiteOpenHelper {
         return week + "-" + year;
     }
 
+    private int getDayofWeek() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get( Calendar.DAY_OF_WEEK );
+    }
+
     public int getWeekCount() {
         SQLiteDatabase db = this.getWritableDatabase();
         String currentWeek = getCurrentWeek();
@@ -224,4 +230,33 @@ public class CounterDbHelper extends SQLiteOpenHelper {
 
         return weekCount;
     }
+
+    public int[] getDayAverages() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String currentDate = getCurrentDate();
+
+        int[] totals = new int[7];
+        int[] numberOfDays = new int[7];
+
+        Cursor previousDays_cursor = db.rawQuery( "SELECT * FROM tb_daily_count WHERE not date_pk='" + currentDate + "'", null );
+
+        previousDays_cursor.moveToFirst();
+
+        // find the total amount of views per day of week
+        // and the number of days per day of week
+        for( int i = 0; i < previousDays_cursor.getCount(); i++ ) {
+            int day = previousDays_cursor.getInt(2);
+            numberOfDays[day]++;
+            totals[day] += previousDays_cursor.getInt(1);
+            previousDays_cursor.moveToNext();
+        }
+
+        for( int i = 0; i < totals.length; i++ ) {
+            totals[i] = totals[i] / numberOfDays[i];
+        }
+
+        previousDays_cursor.close();
+        return totals;
+    }
+
 }
