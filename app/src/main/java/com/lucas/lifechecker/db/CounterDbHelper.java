@@ -244,15 +244,23 @@ public class CounterDbHelper extends SQLiteOpenHelper {
 
         // find the total amount of views per day of week
         // and the number of days per day of week
+
         for( int i = 0; i < previousDays_cursor.getCount(); i++ ) {
             int day = previousDays_cursor.getInt(2);
+            if (day != 0 ) {
+                --day;
+            }
+            Log.d( "DAY", String.valueOf( day ) );
             numberOfDays[day]++;
             totals[day] += previousDays_cursor.getInt(1);
             previousDays_cursor.moveToNext();
         }
 
         for( int i = 0; i < totals.length; i++ ) {
-            totals[i] = totals[i] / numberOfDays[i];
+            if ( numberOfDays[i] != 0 ) {
+                Log.d("Value", String.valueOf( numberOfDays[i]) );
+                totals[i] = totals[i] / numberOfDays[i];
+            }
         }
 
         previousDays_cursor.close();

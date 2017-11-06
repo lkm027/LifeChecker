@@ -16,6 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DailyAverages"
+            android:parentActivityName=".HomeActivity">
+        </activity>
 
         <receiver android:name=".UnlockedPhoneReceiver" android:exported="true">
             <intent-filter>

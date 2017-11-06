@@ -107,4 +107,19 @@
         app:srcCompat="@drawable/ic_refresh"
         android:onClick="refreshCount"/>
 
+    <ImageButton
+        android:id="@+id/button_home_Next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="12dp"
+        android:background="@null"
+        android:onClick="showWeeklyChart"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textVW_home_background"
+        app:srcCompat="@drawable/ic_action_name" />
+
 </android.support.constraint.ConstraintLayout>
