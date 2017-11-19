@@ -20,9 +20,10 @@ public class HomeActivity extends AppCompatActivity {
 
         db = new CounterDbHelper( getApplicationContext() );
         populateScreen();
+//        int dayOfWeek = db.getDayofWeek();
 //        int[] averages = db.getDayAverages();
 //        int day = averages[0];
-//        Toast toast = Toast.makeText( getApplicationContext(), String.valueOf( day ), Toast.LENGTH_LONG );
+//        Toast toast = Toast.makeText( getApplicationContext(), String.valueOf( dayOfWeek ), Toast.LENGTH_LONG );
 //        toast.show();
         db.close();
     }

@@ -27,7 +27,7 @@ public class CounterDbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_WEEKLY_COUNT = "weekly_count";
     public static final String COLUMN_DATE_OF_WEEK = "date_of_week";
 
-    public static final int DATABASE_VERSION = 15;
+    public static final int DATABASE_VERSION = 16;
     public static final String DATABASE_NAME = "Counter.db";
 
     private static final String SQL_CREATE_DAILY_COUNT =
@@ -150,11 +150,13 @@ public class CounterDbHelper extends SQLiteOpenHelper {
     private void addNewDay( String currentDate ) {
         SQLiteDatabase db = this.getWritableDatabase();
 
+        int dayOfWeek = getDayofWeek() - 1;
+
         ContentValues values = new ContentValues();
 
         values.put( COLUMN_DATE, currentDate );
         values.put( COLUMN_DAILY_COUNT, 0 );
-        values.put( COLUMN_DAY_OF_WEEK, getDayofWeek());
+        values.put( COLUMN_DAY_OF_WEEK, dayOfWeek );
         db.insert( TABLE_DAILY_COUNT, null, values );
     }
 
@@ -202,7 +204,7 @@ public class CounterDbHelper extends SQLiteOpenHelper {
         return week + "-" + year;
     }
 
-    private int getDayofWeek() {
+    public int getDayofWeek() {
         Calendar calendar = Calendar.getInstance();
         return calendar.get( Calendar.DAY_OF_WEEK );
     }
@@ -247,10 +249,6 @@ public class CounterDbHelper extends SQLiteOpenHelper {
 
         for( int i = 0; i < previousDays_cursor.getCount(); i++ ) {
             int day = previousDays_cursor.getInt(2);
-            if (day != 0 ) {
-                --day;
-            }
-            Log.d( "DAY", String.valueOf( day ) );
             numberOfDays[day]++;
             totals[day] += previousDays_cursor.getInt(1);
             previousDays_cursor.moveToNext();
