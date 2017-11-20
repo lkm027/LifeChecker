@@ -1,14 +1,12 @@
 package com.lucas.lifechecker.Fragments;
 
 import android.support.v4.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.lucas.lifechecker.Activities.StatisticManagerActivity;
 import com.lucas.lifechecker.R;
 import com.lucas.lifechecker.db.CounterDbHelper;
 
@@ -30,6 +28,7 @@ public class WeekCounter extends Fragment {
         db.close();
 
         removeViews();
+        changeViewText();
 
         return rootView;
     }
@@ -42,9 +41,14 @@ public class WeekCounter extends Fragment {
 
     private void removeViews()
     {
-        rootView.findViewById( R.id.fragment_title_homeActivity ).setVisibility( View.GONE );
+        rootView.findViewById( R.id.fragment_title_StatisticManagerActivity).setVisibility( View.GONE );
         rootView.findViewById( R.id.button_home_Next ).setVisibility( View.GONE );
         rootView.findViewById( R.id.button_home_refreshCount ).setVisibility( View.GONE );
+    }
+
+    private void changeViewText()
+    {
+        ( ( TextView ) rootView.findViewById( R.id.txtVW_home_timesString ) ).setText( R.string.times_this_week);
     }
 
 

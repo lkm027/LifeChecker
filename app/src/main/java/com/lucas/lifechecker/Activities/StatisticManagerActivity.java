@@ -23,10 +23,8 @@ public class StatisticManagerActivity extends FragmentActivity {
     protected void onCreate( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_statistic_manager);
 
-        getSupportFragmentManager();
-
-        setContentView( R.layout.activity_tabs );
         NonSwipeableViewPager viewPager = ( NonSwipeableViewPager ) findViewById( R.id.pager );
 
         setupViewPager( viewPager );
@@ -38,8 +36,8 @@ public class StatisticManagerActivity extends FragmentActivity {
     private void setupViewPager( ViewPager viewPager )
     {
         PagerAdapter adapter = new PagerAdapter( getSupportFragmentManager(), 0 );
-        adapter.addFragment(new DailyAverages(), "ONE" );
-        adapter.addFragment(new WeekCounter(), "TWO" );
+        adapter.addFragment(new DailyAverages(), getString( R.string.tab_daily_averages ) );
+        adapter.addFragment(new WeekCounter(), getString( R.string.tab_weekly_count ) );
         viewPager.setAdapter( adapter );
     }
 

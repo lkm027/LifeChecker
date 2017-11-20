@@ -2,7 +2,6 @@ package com.lucas.lifechecker.Activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -22,30 +21,34 @@ import java.util.List;
  */
 
 public class DailyAverages extends AppCompatActivity {
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.daily_averages);
+        setContentView(R.layout.fragment_daily_averages);
 
         CounterDbHelper db = new CounterDbHelper( this );
 
-        int[] dayaverages = db.getDayAverages();
+        int[] dayAverages = db.getDayAverages();
+        createBarChart( dayAverages );
 
 
+    }
 
-
+    public void createBarChart( int[] dayAverages )
+    {
         BarChart barchart = (BarChart) findViewById( R.id.chart_average_barchart );
 
         List<BarEntry> entries = new ArrayList<>();
 
-        for (int i = 0; i < dayaverages.length; i++ ) {
-            entries.add( new BarEntry( Float.valueOf(i), Float.valueOf( dayaverages[i] ) ) );
+        for (int i = 0; i < dayAverages.length; i++ ) {
+            entries.add( new BarEntry( Float.valueOf(i), Float.valueOf( dayAverages[i] ) ) );
         }
 
         BarDataSet set = new BarDataSet( entries, "BarDataSet" );
-
         BarData data = new BarData( set );
-
         data.setValueTextSize(12);
 
         set.setColor(getResources().getColor(R.color.colorAccent));
@@ -75,28 +78,9 @@ public class DailyAverages extends AppCompatActivity {
         XAxis xAxis = barchart.getXAxis();
         xAxis.setGranularity(1f);
         xAxis.setGranularityEnabled(true);
-        barchart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE
-        );
-
-//        barchart.isDrawBordersEnabled();
+        barchart.getXAxis().setPosition( XAxis.XAxisPosition.BOTTOM_INSIDE );
 
         barchart.invalidate();
-
-//        PieChart chart = ( PieChart ) findViewById(R.id.chart);
-//
-//
-//        List<PieEntry> entries = new ArrayList<>();
-//
-//        entries.add(new PieEntry(18.5f, "Green"));
-//        entries.add(new PieEntry(26.7f, "Yellow"));
-//        entries.add(new PieEntry(24.0f, "Red"));
-//        entries.add(new PieEntry(30.8f, "Blue"));
-//
-//        PieDataSet set = new PieDataSet(entries, "Election Results");
-//        PieData data = new PieData(set);
-//        chart.setData(data);
-//        set.setColors( new int[] { R.color.green, R.color.yellow, R.color.red, R.color.blue }, this);
-//        chart.invalidate(); // refresh
     }
 
 }

@@ -1,10 +1,7 @@
 package com.lucas.lifechecker.Activities;
 
 import android.content.Intent;
-import android.graphics.LightingColorFilter;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -22,7 +19,7 @@ public class HomeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        ((LifeCheckerTitle) getSupportFragmentManager().findFragmentById( R.id.fragment_title_homeActivity )).removeBackButtonView();
+        ((LifeCheckerTitle) getSupportFragmentManager().findFragmentById( R.id.fragment_title_StatisticManagerActivity)).removeBackButtonView();
 
         db = new CounterDbHelper( getApplicationContext() );
         populateScreen();

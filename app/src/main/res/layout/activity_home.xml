@@ -95,7 +95,7 @@
         android:layout_marginEnd="16dp" />
 
     <fragment
-        android:id="@+id/fragment_title_homeActivity"
+        android:id="@+id/fragment_title_StatisticManagerActivity"
         android:tag="fragment_title_homeActivity"
         android:name="com.lucas.lifechecker.Fragments.LifeCheckerTitle"
         android:layout_width="0dp"

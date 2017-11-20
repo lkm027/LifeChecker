@@ -30,7 +30,7 @@ public class DailyAverages extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
     {
-        rootView = inflater.inflate( R.layout.daily_averages, container, false );
+        rootView = inflater.inflate( R.layout.fragment_daily_averages, container, false );
 
         CounterDbHelper db = new CounterDbHelper( this.getContext() );
 

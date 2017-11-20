@@ -28,9 +28,12 @@ public class LifeCheckerTitle extends Fragment {
 
     public void removeBackButtonView()
     {
-        View view = rootView.findViewById( R.id.button_return_to_parent );
         rootView.findViewById( R.id.button_return_to_parent ).setVisibility( View.INVISIBLE );
-
     }
+
+//    public void removeTitleDescription()
+//    {
+//        rootView.findViewById( R.id.textView_description_fragment ).setVisibility( View.GONE );
+//    }
 
 }
