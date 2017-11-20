@@ -19,20 +19,6 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/txtVW_home_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textColor="#fff"
-        android:textSize="24sp"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textVW_home_background" />
-
-    <TextView
         android:id="@+id/txtVW_home_circle"
         android:layout_width="200dp"
         android:layout_height="200dp"
@@ -67,14 +53,11 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="@string/views_for_today"
         android:textColor="#fff"
         app:layout_constraintBottom_toTopOf="@+id/txtVW_home_circle"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtVW_home_title"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/txtVW_home_timesString"
@@ -90,7 +73,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtVW_home_circle"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <ImageButton
         android:id="@+id/button_home_refreshCount"
@@ -104,8 +89,23 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_refresh"
-        android:onClick="refreshCount"/>
+        android:src="@drawable/ic_refresh"
+        android:onClick="refreshCount"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp" />
+
+    <fragment
+        android:id="@+id/fragment_title_homeActivity"
+        android:tag="fragment_title_homeActivity"
+        android:name="com.lucas.lifechecker.Fragments.LifeCheckerTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/button_home_Next"
@@ -120,6 +120,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textVW_home_background"
-        app:srcCompat="@drawable/ic_graphs_icon" />
+        android:src="@drawable/ic_graphs_icon"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -1,15 +1,19 @@
-package com.lucas.lifechecker;
+package com.lucas.lifechecker.Activities;
 
 import android.content.Intent;
+import android.graphics.LightingColorFilter;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.lucas.lifechecker.Fragments.LifeCheckerTitle;
+import com.lucas.lifechecker.R;
 import com.lucas.lifechecker.db.CounterDbHelper;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends FragmentActivity {
 
     CounterDbHelper db;
 
@@ -17,6 +21,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        ((LifeCheckerTitle) getSupportFragmentManager().findFragmentById( R.id.fragment_title_homeActivity )).removeBackButtonView();
 
         db = new CounterDbHelper( getApplicationContext() );
         populateScreen();
@@ -39,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showWeeklyChart( View view ) {
-        Intent intent = new Intent(this, DailyAverages.class );
+        Intent intent = new Intent(this, StatisticManagerActivity.class );
         startActivity( intent );
     }
 }

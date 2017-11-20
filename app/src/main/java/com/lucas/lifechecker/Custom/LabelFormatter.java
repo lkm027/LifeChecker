@@ -1,4 +1,4 @@
-package com.lucas.lifechecker;
+package com.lucas.lifechecker.Custom;
 
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;

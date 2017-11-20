@@ -1,4 +1,4 @@
-package com.lucas.lifechecker;
+package com.lucas.lifechecker.Custom;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
