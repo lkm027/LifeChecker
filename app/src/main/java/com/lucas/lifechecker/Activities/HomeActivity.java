@@ -3,9 +3,11 @@ package com.lucas.lifechecker.Activities;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.lucas.lifechecker.Custom.OnScreenOn;
 import com.lucas.lifechecker.Fragments.LifeCheckerTitle;
 import com.lucas.lifechecker.R;
 import com.lucas.lifechecker.db.CounterDbHelper;
